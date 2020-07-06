@@ -70,12 +70,12 @@ class FileMockeryBuilder implements
     private FileMockery register(FileMockery parentFile, boolean directory, String... pathNames) {
         FileMockery it = null;
         for (final var pathName : pathNames) {
-            it = register(parentFile, directory, pathName);
+            it = registerSingle(parentFile, directory, pathName);
         }
         return it;
     }
 
-    private FileMockery register(FileMockery parentFile, boolean directory, String pathName) {
+    private FileMockery registerSingle(FileMockery parentFile, boolean directory, String pathName) {
         final FileMockery parent;
 
         if (pathName.startsWith("/")) {
@@ -117,7 +117,7 @@ class FileMockeryBuilder implements
             throw new IllegalArgumentException("File name should not contain '/' character as in '" + pathName + "'");
         }
         for (final var dir : pathName.split("/")) {
-            parent = register(parent, true, dir);
+            parent = registerSingle(parent, true, dir);
         }
         return parent;
     }
@@ -169,7 +169,7 @@ class FileMockeryBuilder implements
             if (s.startsWith("/")) {
                 it = registerAbsolute(currDir, false, s);
             } else {
-                it = register(currDir, false, s);
+                it = registerSingle(currDir, false, s);
             }
             it.fileExists = false;
             it.absoluteFile.fileExists = false;
